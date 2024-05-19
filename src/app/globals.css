@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Signika+Negative:wght@300;400&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,18 +18,50 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+:root {
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.font_judul {
+  font-family: "Signika Negative", sans-serif;
+}
+
+.bg-card {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid;
+}
+
+.nav-bottom-tulis {
+  animation: animateNavBottomTulis;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animateNavBottomTulis {
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.nav-bottom-semua {
+  animation: animateNavBottom;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animateNavBottom {
+  0% {
+    transform: translateY(100px);
+  }
+  100% {
+    transform: translateY(0px);
   }
 }
