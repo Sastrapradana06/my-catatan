@@ -1,6 +1,7 @@
 "use client";
 
 import NavMemo from "@/components/ui/nav-memo";
+import { getDataNow, getFormattedDateTime } from "@/utils/utils";
 import { useRef, useState, RefObject, useEffect } from "react";
 
 export default function TulisMemo() {
@@ -10,6 +11,7 @@ export default function TulisMemo() {
 
   const textareaRef = useRef(null);
   const textareaJudul = useRef(null);
+  const dateNow = getDataNow();
 
   function setDynamicHeight(ref: RefObject<HTMLTextAreaElement>) {
     const textarea = ref.current;
@@ -24,14 +26,13 @@ export default function TulisMemo() {
     setDynamicHeight(textareaJudul);
   }, []);
 
-  console.log({
-    judulMemo,
-    teksMemo,
-  });
-
   return (
     <div className=" absolute z-20 w-full h-[100vh] page-memo bg-[#242424] p-1">
-      <NavMemo />
+      <NavMemo
+        judulMemo={judulMemo}
+        teksMemo={teksMemo}
+        setTeksMemo={setTeksMemo}
+      />
 
       <div className=" mt-8">
         <form className="w-[90%] m-auto lg:w-[70%]">
@@ -47,7 +48,9 @@ export default function TulisMemo() {
             onFocus={() => setIsInputFocused(true)}
           />
           <div className=" mt-1 text-[.8rem] text-gray-400">
-            <p>Senin, 15:99 | {teksMemo.length} kata</p>
+            <p>
+              {dateNow} | {teksMemo.length} kata
+            </p>
           </div>
           <textarea
             className="bg-transparent w-[100%] text-[1rem] flex flex-wrap items-center h-[50px] outline-none mt-6 text-gray-400 border-none"

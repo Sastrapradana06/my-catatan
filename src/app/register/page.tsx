@@ -1,22 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import useHandleInput from "./hooks/useHandleInput";
-import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import useHandleInput from "../hooks/useHandleInput";
 
-export default function Home() {
+export default function Register() {
   const [input, handleChange] = useHandleInput({
     email: "",
     password: "",
+    confirmPassword: "",
   });
-
-  const router = useRouter();
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    router.push("/home");
-  };
 
   return (
     <div className="w-full h-[100vh] flex justify-center items-center gap-4">
@@ -29,7 +21,8 @@ export default function Home() {
           />
           <p className="font_judul text-[1.8rem] font-semibold">Mycatatan</p>
         </div>
-        <form className="w-full h-max mt-6" onSubmit={handleSubmit}>
+
+        <form className="w-full h-max mt-6">
           <div className="mb-5">
             <label
               htmlFor="email"
@@ -63,19 +56,35 @@ export default function Home() {
               required={true}
             />
           </div>
+          <div className="mb-5">
+            <label
+              htmlFor="repeat-password"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={input.confirmPassword}
+              onChange={handleChange}
+              className="shadow-sm outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              required={true}
+            />
+          </div>
           <button
             type="submit"
             className="text-white outline-none bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Login
+            Register
           </button>
         </form>
 
         <div className="w-full h-max flex items-center gap-2 mt-6">
-          <p className="text-[.9rem]">Belum memiliki akun?</p>
-          <Link href={"/register"}>
+          <p className="text-[.9rem]">Sudah memiliki akun?</p>
+          <Link href={"/"}>
             <button className="text-[.9rem] py-1 px-3 rounded-md bg-pink-600 hover:bg-pink-700 ">
-              Buat Akun
+              Masuk Akun
             </button>
           </Link>
         </div>

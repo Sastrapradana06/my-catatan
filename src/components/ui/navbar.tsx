@@ -1,10 +1,15 @@
 "use client";
 
+import { useAppStore } from "@/utils/store";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BiSearch } from "react-icons/bi";
+import { useShallow } from "zustand/react/shallow";
 
 export function Navbar() {
+  const [setIsEdit] = useAppStore(
+    useShallow((state: any) => [state.setIsEdit])
+  );
   const pathname = usePathname();
 
   return (
@@ -14,7 +19,7 @@ export function Navbar() {
           <h1 className="font-judul text-[1.5rem] tracking-[2px]">Mycatatan</h1>
         </div>
         <div className="flex justify-center gap-4 items-center">
-          <button>Edit</button>
+          <button onClick={() => setIsEdit(true)}>Edit</button>
           <button>
             <Link href="/">
               <BiSearch size={25} />
