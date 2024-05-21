@@ -2,13 +2,52 @@
 
 import Link from "next/link";
 import useHandleInput from "../hooks/useHandleInput";
+import { useState } from "react";
+import LoadingBtn from "@/components/ui/loading-btn";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [input, handleChange] = useHandleInput({
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  const router = useRouter();
+
+  const hanldeSubmit = async (e: any) => {
+    setMessage("");
+    setIsLoading(true);
+    e.preventDefault();
+
+    if (input.password !== input.confirmPassword) {
+      setIsLoading(false);
+      setMessage("Confirm password salah !!");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        setMessage("Email sudah terdaftar");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <div className="w-full h-[100vh] flex justify-center items-center gap-4">
@@ -22,7 +61,7 @@ export default function Register() {
           <p className="font_judul text-[1.8rem] font-semibold">Mycatatan</p>
         </div>
 
-        <form className="w-full h-max mt-6">
+        <form className="w-full h-max mt-6" onSubmit={hanldeSubmit}>
           <div className="mb-5">
             <label
               htmlFor="email"
@@ -56,7 +95,7 @@ export default function Register() {
               required={true}
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-1">
             <label
               htmlFor="repeat-password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -72,10 +111,17 @@ export default function Register() {
               required={true}
             />
           </div>
+          <div className="w-full h-max mb-5">
+            <p className="text-red-500 font-semibold text-[.9rem] italic">
+              {message}
+            </p>
+          </div>
           <button
             type="submit"
-            className="text-white outline-none bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            disabled={isLoading}
+            className="text-white  outline-none bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center gap-1"
           >
+            <LoadingBtn size={22} isLoading={isLoading} />
             Register
           </button>
         </form>

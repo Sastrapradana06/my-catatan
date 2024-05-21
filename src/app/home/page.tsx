@@ -1,5 +1,10 @@
+"use client";
+
 import AppShel from "@/components/layout/appShel";
 import CardMemo from "@/components/ui/card-memo";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const data = [
   {
@@ -19,6 +24,14 @@ const data = [
 ];
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  console.log({ session, status });
+
+  useEffect(() => {
+    if (status === "unauthenticated") router.push("/");
+  }, [status]);
+
   return (
     <AppShel>
       <div className="p-2 flex flex-col gap-3 w-[95%] m-auto pb-20 lg:w-[70%]">

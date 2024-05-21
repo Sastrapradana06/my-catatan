@@ -1,11 +1,4 @@
-// interface TypeDataNow {
-//     dayName: string;
-//     hours: string;
-//     minutes: string;
-//     day: string;
-//     month: string;
-//     year: string;
-// }
+import bcrypt from "bcrypt";
 
 export function getFormattedDateTime() {
   const days = ["minggu", "senin", "selasa", "rabu", "kamis", "jumat", "sabtu"];
@@ -25,4 +18,18 @@ export const getDataNow = () => {
     day: "numeric",
   };
   return event.toLocaleDateString("id-ID", options);
+};
+
+export const hashPassword = async (password: string) => {
+  const saltRounds = 10;
+  const result = await bcrypt.hash(password, saltRounds);
+  return result;
+};
+
+export const comparePassword = async (
+  password: string,
+  hashPassword: string
+) => {
+  const result = await bcrypt.compare(password, hashPassword);
+  return result;
 };

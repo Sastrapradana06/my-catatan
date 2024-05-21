@@ -4,6 +4,7 @@ import Link from "next/link";
 import useHandleInput from "./hooks/useHandleInput";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
+import { signIn, signOut } from "next-auth/react";
 
 export default function Home() {
   const [input, handleChange] = useHandleInput({
@@ -15,7 +16,17 @@ export default function Home() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push("/home");
+    try {
+      const res = await signIn("credentials", {
+        email: input.email,
+        password: input.password,
+        redirect: false,
+      });
+
+      console.log({ res });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -78,6 +89,17 @@ export default function Home() {
               Buat Akun
             </button>
           </Link>
+          <Link href={"/home"}>
+            <button className="text-[.9rem] py-1 px-3 rounded-md bg-violet-600 hover:bg-violet-700 ">
+              Home
+            </button>
+          </Link>
+          <button
+            className="text-[.9rem] py-1 px-3 rounded-md bg-orange-600 hover:bg-orange-700 "
+            onClick={() => signOut()}
+          >
+            SignOut
+          </button>
         </div>
       </div>
     </div>
