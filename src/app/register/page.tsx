@@ -10,6 +10,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [input, handleChange] = useHandleInput({
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -62,6 +63,23 @@ export default function Register() {
         </div>
 
         <form className="w-full h-max mt-6" onSubmit={hanldeSubmit}>
+          <div className="mb-5">
+            <label
+              htmlFor="username"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Masukkan username
+            </label>
+            <input
+              type="teks"
+              name="username"
+              value={input.username}
+              onChange={handleChange}
+              className="shadow-sm outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              placeholder="name"
+              required={true}
+            />
+          </div>
           <div className="mb-5">
             <label
               htmlFor="email"

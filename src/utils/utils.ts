@@ -9,9 +9,51 @@ export function getFormattedDateTime() {
   return `${dayName}, ${hours}:${minutes}`;
 }
 
+export function formatTimeDB(timestamp: string) {
+  const date = new Date(timestamp);
+  const hours = date.getUTCHours().toString().padStart(2, "0");
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+}
+
+export function formatIndonesianDate(timestamp: string) {
+  const daysOfWeek = [
+    "Minggu",
+    "Senin",
+    "Selasa",
+    "Rabu",
+    "Kamis",
+    "Jumat",
+    "Sabtu",
+  ];
+  const monthsOfYear = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+
+  const date = new Date(timestamp);
+
+  const dayOfWeek = daysOfWeek[date.getUTCDay()]; // Get the day of the week in UTC
+  const dayOfMonth = date.getUTCDate(); // Get the day of the month in UTC
+  const month = monthsOfYear[date.getUTCMonth()]; // Get the month in UTC
+  const year = date.getUTCFullYear(); // Get the year in UTC
+
+  return `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
+}
+
 export const getDataNow = () => {
   const event = new Date();
-  const options: Parameters<typeof Intl.DateTimeFormat>[1] = {
+  const options: any = {
     weekday: "long",
     year: "numeric",
     month: "long",

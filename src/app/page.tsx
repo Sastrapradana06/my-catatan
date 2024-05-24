@@ -3,10 +3,12 @@
 import Link from "next/link";
 import useHandleInput from "./hooks/useHandleInput";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
+import LoadingBtn from "@/components/ui/loading-btn";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
   const [input, handleChange] = useHandleInput({
     email: "",
     password: "",
@@ -15,6 +17,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
     try {
       const res = await signIn("credentials", {
@@ -23,10 +26,16 @@ export default function Home() {
         redirect: false,
       });
 
-      console.log({ res });
+      if (res?.ok) {
+        router.push("/home");
+      }
+
+      console.log({ res, input });
     } catch (error) {
       console.log(error);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -76,8 +85,10 @@ export default function Home() {
           </div>
           <button
             type="submit"
-            className="text-white outline-none bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            disabled={isLoading}
+            className="text-white  outline-none bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center gap-1"
           >
+            <LoadingBtn size={22} isLoading={isLoading} />
             Login
           </button>
         </form>
@@ -89,17 +100,17 @@ export default function Home() {
               Buat Akun
             </button>
           </Link>
-          <Link href={"/home"}>
+          {/* <Link href={"/home"}>
             <button className="text-[.9rem] py-1 px-3 rounded-md bg-violet-600 hover:bg-violet-700 ">
               Home
             </button>
-          </Link>
-          <button
+          </Link> */}
+          {/* <button
             className="text-[.9rem] py-1 px-3 rounded-md bg-orange-600 hover:bg-orange-700 "
             onClick={() => signOut()}
           >
             SignOut
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { handleLogin } from "@/lib/supabase/auth";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { cookies } from "next/headers";
 
 const authOptions: NextAuthOptions = {
   session: {
@@ -23,30 +24,28 @@ const authOptions: NextAuthOptions = {
           password: string;
         };
 
-        const user: any = {
-          id: 1,
-          name: "John Doe",
-          email,
-        };
-
-        if (email == "name@gmail.com" || password == "1") {
+        const login: any = await handleLogin({ email, password });
+        if (!login.status) {
+          return null;
+        } else {
+          const user = {
+            id: login.user.id,
+            name: login.user.username,
+            email: login.user.email,
+          };
+          cookies().set("user", JSON.stringify(user));
           return user;
         }
-
-        // const login: any = await handleLogin({ email, password });
-        // if (!login.status) {
-        //   return null;
-        // }
-        // return login
       },
     }),
   ],
   callbacks: {
     async jwt({ token, account, user }: any) {
       if (account?.providers === "credentials") {
-        (token.email = user.email),
-          (token.name = user.name),
-          (token.id = user.id);
+        token.email = user.email;
+        token.name = user.name;
+        token.id = user.id;
+        token.sub = user.id;
       }
 
       return token;
@@ -57,8 +56,12 @@ const authOptions: NextAuthOptions = {
         session.user.email = token.email;
       }
 
-      if ("id" in token) {
-        session.user.id = token.id;
+      if ("sub" in token) {
+        session.user.id = token.sub;
+      }
+
+      if ("name" in token) {
+        session.user.name = token.name;
       }
 
       return session;

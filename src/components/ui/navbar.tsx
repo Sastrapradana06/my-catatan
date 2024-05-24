@@ -4,13 +4,23 @@ import { useAppStore } from "@/utils/store";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BiSearch } from "react-icons/bi";
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import { MdDelete } from "react-icons/md";
 import { useShallow } from "zustand/react/shallow";
+import { signOut } from "next-auth/react";
 
 export function Navbar() {
   const [setIsEdit] = useAppStore(
     useShallow((state: any) => [state.setIsEdit])
   );
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    if (confirm("Apakah anda yakin ingin keluar?")) {
+      await signOut();
+    }
+  };
 
   return (
     <div className=" p-1 fixed top-0 w-[100%] border-b-b z-10 bg-[#2B2730]">
@@ -19,7 +29,12 @@ export function Navbar() {
           <h1 className="font-judul text-[1.5rem] tracking-[2px]">Mycatatan</h1>
         </div>
         <div className="flex justify-center gap-4 items-center">
-          <button onClick={() => setIsEdit(true)}>Edit</button>
+          <button title="Logout" onClick={handleLogout}>
+            <RiLogoutCircleRLine size={23} className="text-yellow-500" />
+          </button>
+          <button onClick={() => setIsEdit(true)}>
+            <MdDelete size={23} className="text-red-500" />
+          </button>
           <button>
             <Link href="/">
               <BiSearch size={25} />

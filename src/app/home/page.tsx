@@ -1,47 +1,49 @@
-"use client";
+// "use client";
 
 import AppShel from "@/components/layout/appShel";
 import CardMemo from "@/components/ui/card-memo";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { getCatatanUser } from "@/lib/supabase/fetch";
+import { cookies } from "next/headers";
 
-const data = [
-  {
-    id: 1,
-    judul: "Judul1",
-    date: "Minggu, 1 Januari 2022",
-    time: "17:41",
-    teks: "lorem",
-  },
-  {
-    id: 2,
-    judul: "Judul2",
-    date: "Minggu, 2 Januari 2022",
-    time: "17:42",
-    teks: "ipsum",
-  },
-];
+const getData = async () => {
+  const cookieStore = cookies();
+  const theme = cookieStore.get("user");
 
-export default function Home() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  console.log({ session, status });
+  if (theme === undefined) {
+    return null;
+  }
 
-  useEffect(() => {
-    if (status === "unauthenticated") router.push("/");
-  }, [status]);
+  const user = JSON.parse(theme.value);
+  console.log({ user });
 
+  try {
+    const result = await getCatatanUser(user.id);
+
+    if (result.status && result.data) {
+      if (result.data?.length > 0) {
+        const dataShort = result.data.sort((a, b) => a.id - b.id);
+        return dataShort;
+      }
+      return result.data;
+    }
+    return null;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default async function Home() {
+  const dataMemo = await getData();
   return (
     <AppShel>
       <div className="p-2 flex flex-col gap-3 w-[95%] m-auto pb-20 lg:w-[70%]">
-        {data.map((data) => (
+        {dataMemo?.map((data: any) => (
           <CardMemo
             id={data.id}
             key={data.id}
             judul={data.judul}
-            date={data.date}
-            time={data.time}
+            date={data.created_at}
+            time_update={data.time_update}
           />
         ))}
       </div>

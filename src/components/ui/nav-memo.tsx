@@ -17,10 +17,14 @@ const NavMemo = ({
   judulMemo,
   teksMemo,
   setTeksMemo,
+  addMemo,
+  process,
 }: {
   judulMemo: string;
   teksMemo: string;
   setTeksMemo: React.Dispatch<React.SetStateAction<string>>;
+  addMemo: any;
+  process: boolean;
 }) => {
   const [deletedValue, setDeletedValue] = useState("");
 
@@ -94,10 +98,12 @@ const NavMemo = ({
           </button>
 
           {judulMemo.length > 0 && teksMemo.length > 0 && (
-            <button type="submit">
-              <Link href="/">
-                <RiCheckLine size={25} color="white" />
-              </Link>
+            <button
+              onClick={addMemo}
+              className="disabled:text-gray-400 disabled:cursor-not-allowed text-white"
+              disabled={process}
+            >
+              <RiCheckLine size={25} />
             </button>
           )}
         </div>
