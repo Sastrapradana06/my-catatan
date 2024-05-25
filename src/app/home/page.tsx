@@ -1,52 +1,73 @@
-// "use client";
+"use client";
 
 import AppShel from "@/components/layout/appShel";
 import CardMemo from "@/components/ui/card-memo";
+import SkeletonCard from "@/components/ui/skeleton";
 import { getCatatanUser } from "@/lib/supabase/fetch";
-import { cookies } from "next/headers";
+import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
-const getData = async () => {
-  const cookieStore = cookies();
-  const theme = cookieStore.get("user");
+// import { cookies } from "next/headers";
+import { useEffect, useState } from "react";
 
-  if (theme === undefined) {
-    return null;
-  }
+type CustomUser = {
+  id: string | any;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+};
 
-  const user = JSON.parse(theme.value);
-  console.log({ user });
+type CustomSession = Session & {
+  user: CustomUser;
+};
 
-  try {
-    const result = await getCatatanUser(user.id);
+export default function Home() {
+  const [dataMemo, setDataMemo] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { data } = useSession() as { data: CustomSession | null };
+
+  const getData = async () => {
+    setIsLoading(true);
+
+    const result = await getCatatanUser(data?.user?.id);
 
     if (result.status && result.data) {
       if (result.data?.length > 0) {
         const dataShort = result.data.sort((a, b) => a.id - b.id);
-        return dataShort;
+        setDataMemo(dataShort);
+      } else {
+        setDataMemo([]);
       }
-      return result.data;
     }
-    return null;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-export default async function Home() {
-  const dataMemo = await getData();
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getData();
+  }, [data]);
+
   return (
     <AppShel>
-      <div className="p-2 flex flex-col gap-3 w-[95%] m-auto pb-20 lg:w-[70%]">
-        {dataMemo?.map((data: any) => (
-          <CardMemo
-            id={data.id}
-            key={data.id}
-            judul={data.judul}
-            date={data.created_at}
-            time_update={data.time_update}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <SkeletonCard />
+      ) : dataMemo.length > 0 ? (
+        <div className="p-2 flex flex-col gap-3 w-[95%] m-auto pb-10 lg:w-[70%]">
+          {dataMemo.map((data: any) => (
+            <CardMemo
+              id={data.id}
+              key={data.id}
+              judul={data.judul}
+              date={data.created_at}
+              time_update={data.time_update}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="w-full h-max text-center">
+          Buat catatan pertama anda
+        </div>
+      )}
     </AppShel>
   );
 }

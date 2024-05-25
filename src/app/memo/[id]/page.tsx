@@ -29,7 +29,7 @@ export default function Memo({ params }: { params: { id: string | number } }) {
   const [teksMemo, setTeksMemo] = useState("");
 
   const textareaRef = useRef(null);
-  const textareaJudul = useRef(null);
+  const textareaTeks = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
 
   const getDataNow = () => {
@@ -46,7 +46,7 @@ export default function Memo({ params }: { params: { id: string | number } }) {
     const textarea = ref.current;
     if (textarea) {
       textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
+      textarea.style.height = 25 + textarea.scrollHeight + "px";
     }
   }
 
@@ -88,6 +88,7 @@ export default function Memo({ params }: { params: { id: string | number } }) {
 
   useEffect(() => {
     getDetailCatatan(params.id);
+    // setDynamicHeight(textareaTeks);
   }, [params.id]);
 
   return (
@@ -125,8 +126,8 @@ export default function Memo({ params }: { params: { id: string | number } }) {
           </div>
           <textarea
             className="bg-transparent w-[100%] text-[1rem] flex flex-wrap items-center h-[50px] outline-none mt-6 text-gray-400 border-none"
-            onInput={() => setDynamicHeight(textareaJudul)}
-            ref={textareaJudul}
+            onInput={() => setDynamicHeight(textareaTeks)}
+            ref={textareaTeks}
             rows={1}
             cols={15}
             value={teksMemo}

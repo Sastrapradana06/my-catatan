@@ -1,9 +1,11 @@
 "use client";
 
 import NavMemo from "@/components/ui/nav-memo";
+import { tambahCatatan } from "@/lib/supabase/insert";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useRef, useState, RefObject, useEffect } from "react";
+import { RiLoader2Fill } from "react-icons/ri";
 
 export default function TulisMemo() {
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -46,15 +48,9 @@ export default function TulisMemo() {
         time_update: "",
       };
 
-      const res = await fetch("/api/add-memo", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await tambahCatatan(data);
 
-      if (res.ok) {
+      if (res.status) {
         router.push("/home");
       } else {
         confirm("Gagal menambahkan catatan");
@@ -73,6 +69,11 @@ export default function TulisMemo() {
 
   return (
     <div className=" absolute z-20 w-full h-[100vh] page-memo bg-[#242424] p-1">
+      {isLoading && (
+        <div className="w-full h-[100vh] absolute top-0 left-0 flex justify-center items-center z-20 bg-[#02020217]">
+          <RiLoader2Fill size={30} className=" animate-spin text-white" />
+        </div>
+      )}
       <NavMemo
         judulMemo={judulMemo}
         teksMemo={teksMemo}
@@ -96,7 +97,7 @@ export default function TulisMemo() {
           />
           <div className=" mt-1 text-[.8rem] text-gray-400">
             <p>
-              {getDataNow()} | {teksMemo.length} kata
+              {getDataNow()} | {teksMemo.split(" ").join("").length} kata
             </p>
           </div>
           <textarea
@@ -106,6 +107,7 @@ export default function TulisMemo() {
             rows={1}
             cols={15}
             value={teksMemo}
+            placeholder="Tulis catatan disini..."
             onChange={(e) => setTeksMemo(e.target.value)}
             onFocus={() => setIsInputFocused(false)}
           />

@@ -50,6 +50,7 @@ export default function Bookmark() {
               key={data.id}
               judul={data.judul}
               date={data.created_at}
+              time_update={data.time_update}
             />
           ))}
         </div>
