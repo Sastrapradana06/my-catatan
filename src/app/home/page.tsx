@@ -6,6 +6,8 @@ import SkeletonCard from "@/components/ui/skeleton";
 import { getCatatanUser } from "@/lib/supabase/fetch";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
+import { useAppStore } from "@/utils/store";
+import { useShallow } from "zustand/react/shallow";
 
 // import { cookies } from "next/headers";
 import { useEffect, useState } from "react";
@@ -25,6 +27,9 @@ export default function Home() {
   const [dataMemo, setDataMemo] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { data } = useSession() as { data: CustomSession | null };
+  const [setListIdBookmark] = useAppStore(
+    useShallow((state: any) => [state.setListIdBookmark])
+  );
 
   const getData = async () => {
     setIsLoading(true);
@@ -34,6 +39,11 @@ export default function Home() {
     if (result.status && result.data) {
       if (result.data?.length > 0) {
         const dataShort = result.data.sort((a, b) => a.id - b.id);
+        const filterBookmark = dataShort.filter(
+          (item: any) => item.is_bookmark === true
+        );
+        const ids = filterBookmark.map((item: any) => item.id);
+        setListIdBookmark(ids);
         setDataMemo(dataShort);
       } else {
         setDataMemo([]);
@@ -46,6 +56,8 @@ export default function Home() {
   useEffect(() => {
     getData();
   }, [data]);
+
+  // console.log({ isLoading, dataMemo });
 
   return (
     <AppShel>

@@ -3,6 +3,7 @@
 import AppShel from "@/components/layout/appShel";
 import CardMemo from "@/components/ui/card-memo";
 import SkeletonCard from "@/components/ui/skeleton";
+import { getCatatanUser } from "@/lib/supabase/fetch";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -18,17 +19,34 @@ type CustomSession = Session & {
   user: CustomUser;
 };
 
+type MemoType = {
+  id: string | number;
+  judul: string;
+  created_at: string;
+  time_update: string;
+  is_bookmark: boolean;
+};
+
 export default function Bookmark() {
-  const [memo, setMemo] = useState([]);
+  const [memo, setMemo] = useState<MemoType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { data } = useSession() as { data: CustomSession | null };
   const getData = async () => {
+    if (!data?.user?.id) {
+      return;
+    }
     setIsLoading(true);
-    const res = await fetch(`/api/get-memo?query=${data?.user?.id}`);
+    const result = await getCatatanUser(data?.user?.id);
 
-    if (res.status == 200) {
-      const data = await res.json();
-      setMemo(data.data);
+    if (result.status && result.data) {
+      if (result.data.length > 0) {
+        const filterBookmark = result.data.filter(
+          (item: any) => item.is_bookmark === true
+        );
+        if (filterBookmark.length > 0) {
+          setMemo(filterBookmark);
+        }
+      }
     }
 
     setIsLoading(false);
@@ -55,7 +73,9 @@ export default function Bookmark() {
           ))}
         </div>
       ) : (
-        <div className="w-full h-max text-center">Pengingat tidak ada</div>
+        <div className="w-full h-max text-center">
+          Tidak ada catatan yang ditandai
+        </div>
       )}
     </AppShel>
   );

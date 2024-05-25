@@ -31,7 +31,6 @@ const NavBottom = () => {
         deleteSelectedId();
         router.push("/home");
       }
-      console.log({ selectedId, result });
     }
   };
 

@@ -7,4 +7,7 @@ export const useAppStore = create((set) => ({
 
   isEdit: false,
   setIsEdit: (status: boolean) => set({ isEdit: status }),
+
+  listIdBookmark: [],
+  setListIdBookmark: (data: any) => set({ listIdBookmark: data }),
 }));

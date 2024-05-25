@@ -104,6 +104,7 @@ export default function Memo({ params }: { params: { id: string | number } }) {
         setTeksMemo={setTeksMemo}
         addMemo={handleSubmit}
         process={isLoading}
+        id={params.id}
       />
 
       <div className=" mt-8">

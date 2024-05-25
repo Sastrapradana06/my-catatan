@@ -11,7 +11,14 @@ import {
   BsBookmarkStarFill,
 } from "react-icons/bs";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
+import { CiStar } from "react-icons/ci";
+import { TiStarFullOutline } from "react-icons/ti";
+import { handleIsBookmark } from "@/lib/supabase/update";
+import { useAppStore } from "@/utils/store";
+import { useShallow } from "zustand/react/shallow";
 
 const NavMemo = ({
   judulMemo,
@@ -19,14 +26,21 @@ const NavMemo = ({
   setTeksMemo,
   addMemo,
   process,
+  id,
 }: {
   judulMemo: string;
   teksMemo: string;
   setTeksMemo: React.Dispatch<React.SetStateAction<string>>;
   addMemo: any;
   process: boolean;
+  id?: string | number;
 }) => {
   const [deletedValue, setDeletedValue] = useState("");
+  const [listIdBookmark, setListIdBookmark] = useAppStore(
+    useShallow((state: any) => [state.listIdBookmark, state.setListIdBookmark])
+  );
+  const pathname = usePathname();
+  const idCatatan = parseInt(id as string);
 
   const handleDeleteTeks = () => {
     const updatedValue = teksMemo.substring(0, teksMemo.length - 1);
@@ -41,6 +55,21 @@ const NavMemo = ({
     setDeletedValue("");
   };
 
+  const toogleBookmark = async () => {
+    if (id) {
+      const result = await handleIsBookmark(id);
+      if (result.status) {
+        if (listIdBookmark.includes(idCatatan)) {
+          setListIdBookmark(
+            listIdBookmark.filter((item: any) => item != idCatatan)
+          );
+        } else {
+          setListIdBookmark([...listIdBookmark, idCatatan]);
+        }
+      }
+    }
+  };
+
   return (
     <div className=" mt-4">
       <div className=" w-[90%] m-auto h-[30px] flex justify-between items-center lg:w-[70%]">
@@ -52,22 +81,15 @@ const NavMemo = ({
           </button>
         </div>
         <div className="flex gap-4 lg:gap-6">
-          {/* {detailMemo.length !== 0 && 
-          <div className="flex gap-4">
-              <button onClick={addBookMark}>
-                  {!isBookMark ? (
-                    <BsBookmarkStar size={23}/>
-                  ) : (
-                    <BsBookmarkStarFill size={23} color="orange" />
-                  )}
-              </button>
-              <button onClick={deletedMemo}>
-                <Link to='/'>
-                  <RiDeleteBin6Line size={25} color="crimson"/>
-                </Link>
-              </button>
-          </div>
-          }  */}
+          {pathname !== "/tulis-memo" && (
+            <button onClick={toogleBookmark}>
+              {listIdBookmark.includes(idCatatan) ? (
+                <TiStarFullOutline size={25} fill="orange" />
+              ) : (
+                <CiStar size={25} />
+              )}
+            </button>
+          )}
           <button
             className={``}
             onClick={handleDeleteTeks}
