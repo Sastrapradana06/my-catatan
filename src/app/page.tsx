@@ -26,11 +26,11 @@ export default function Home() {
         redirect: false,
       });
 
-      if (res?.ok) {
-        router.push("/home");
+      if (res) {
+        if (res.ok || res.status == 200) {
+          router.push("/home");
+        }
       }
-
-      console.log({ res, input });
     } catch (error) {
       console.log(error);
     }
