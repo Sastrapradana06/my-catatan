@@ -62,7 +62,10 @@ export default function Register() {
           <p className="font_judul text-[1.8rem] font-semibold">Mycatatan</p>
         </div>
 
-        <form className="w-full h-max mt-6" onSubmit={hanldeSubmit}>
+        <form
+          className="w-full h-max mt-6 lg:w-[60%] lg:m-auto"
+          onSubmit={hanldeSubmit}
+        >
           <div className="mb-5">
             <label
               htmlFor="username"
@@ -144,7 +147,7 @@ export default function Register() {
           </button>
         </form>
 
-        <div className="w-full h-max flex items-center gap-2 mt-6">
+        <div className="w-full h-max flex items-center gap-2 mt-6 lg:w-[60%] lg:mt-8 lg:m-auto">
           <p className="text-[.9rem]">Sudah memiliki akun?</p>
           <Link href={"/"}>
             <button className="text-[.9rem] py-1 px-3 rounded-md bg-pink-600 hover:bg-pink-700 ">

@@ -49,7 +49,10 @@ export default function Home() {
           />
           <p className="font_judul text-[1.8rem] font-semibold">Mycatatan</p>
         </div>
-        <form className="w-full h-max mt-6" onSubmit={handleSubmit}>
+        <form
+          className="w-full h-max mt-6 lg:w-[60%] lg:m-auto"
+          onSubmit={handleSubmit}
+        >
           <div className="mb-5">
             <label
               htmlFor="email"
@@ -93,7 +96,7 @@ export default function Home() {
           </button>
         </form>
 
-        <div className="w-full h-max flex items-center gap-2 mt-6">
+        <div className="w-full h-max flex items-center gap-2 mt-6 lg:w-[60%] lg:mt-8 lg:m-auto">
           <p className="text-[.9rem]">Belum memiliki akun?</p>
           <Link href={"/register"}>
             <button className="text-[.9rem] py-1 px-3 rounded-md bg-pink-600 hover:bg-pink-700 ">
