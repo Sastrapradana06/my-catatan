@@ -7,21 +7,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { RiLoader2Fill } from "react-icons/ri";
 
-export const getDetailCatatan = async (id: string | number) => {
-  try {
-    const result = await getCatatanById(id);
-
-    console.log({ result });
-
-    if (result.status) {
-      return result.data;
-    }
-    return null;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export default function Memo({ params }: { params: { id: string | number } }) {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
