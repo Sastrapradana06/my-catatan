@@ -2,10 +2,22 @@
 
 import NavMemo from "@/components/ui/nav-memo";
 import { tambahCatatan } from "@/lib/supabase/insert";
+import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useRef, useState, RefObject, useEffect } from "react";
 import { RiLoader2Fill } from "react-icons/ri";
+
+type CustomUser = {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+};
+
+type CustomSession = Session & {
+  user: CustomUser;
+};
 
 export default function TulisMemo() {
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -15,7 +27,7 @@ export default function TulisMemo() {
 
   const textareaRef = useRef(null);
   const textareaJudul = useRef(null);
-  const { data: users } = useSession();
+  const { data: users } = useSession() as { data: CustomSession | null };
   const router = useRouter();
 
   const getDataNow = () => {
