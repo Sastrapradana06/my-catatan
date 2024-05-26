@@ -50,11 +50,10 @@ export default function Home() {
       <div className="w-[90%] h-max">
         <div className="w-max h-max m-auto flex items-center gap-2">
           <img
-            src="/book.svg"
+            src="/logo2.png"
             alt="img_book"
-            className="w-[50px] h-[50px] object-cover"
+            className="w-[170px] h-[100px] object-cover"
           />
-          <p className="font_judul text-[1.8rem] font-semibold">Mycatatan</p>
         </div>
         <form
           className="w-full h-max mt-6 lg:w-[60%] lg:m-auto"

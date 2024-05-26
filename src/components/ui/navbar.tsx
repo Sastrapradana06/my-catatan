@@ -36,7 +36,7 @@ export function Navbar() {
             <MdDelete size={23} className="text-red-500" />
           </button>
           <button>
-            <Link href="/">
+            <Link href="/home">
               <BiSearch size={25} />
             </Link>
           </button>
