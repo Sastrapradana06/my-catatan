@@ -2,6 +2,7 @@ import InputSearch from "@/components/ui/input-search";
 import ResultSearch from "./result-search";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
+import { Suspense } from "react";
 
 export default function CariMemo() {
   return (
@@ -15,7 +16,9 @@ export default function CariMemo() {
         <InputSearch />
       </div>
       <div className="w-[90%] m-auto h-max mt-8 ">
-        <ResultSearch />
+        <Suspense fallback={<div className="text-center">Loading...</div>}>
+          <ResultSearch />
+        </Suspense>
       </div>
     </main>
   );

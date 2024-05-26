@@ -33,10 +33,7 @@ export default function InputSearch() {
         />
       </div>
       {inputValue.length <= 3 ? (
-        <button
-          onClick={handleButton}
-          className="p-2.5 ms-2 text-sm font-medium cursor-not-allowed text-white rounded-lg border border-pink-700  focus:ring-4 focus:outline-none  bg-pink-800 hover:bg-pink-900 focus:ring-pink-800"
-        >
+        <button className="p-2.5 ms-2 text-sm font-medium cursor-not-allowed text-white rounded-lg border border-pink-700  focus:ring-4 focus:outline-none  bg-pink-800 hover:bg-pink-900 focus:ring-pink-800">
           <BiSearch size={20} className="text-gray-400" />
           <span className="sr-only">Search</span>
         </button>
