@@ -5,14 +5,21 @@ export function middleware(req: NextRequest) {
   const user = req.cookies.get("user");
 
   console.log("Cookies: ", { token, user });
+  console.log("url: ", req.nextUrl.pathname);
 
-  // if (cookie == undefined) {
-  //   return NextResponse.redirect(new URL("/", req.url));
-  // }
+  if (req.nextUrl.pathname === "/") {
+    const response = NextResponse.next();
+    response.cookies.delete("user");
+    return response;
+  }
 
-  return NextResponse.next();
+  if (token == undefined) {
+    return NextResponse.redirect(new URL("/", req.url));
+  } else {
+    return NextResponse.next();
+  }
 }
 
 export const config = {
-  matcher: ["/home", "/bookmark", "/tulis-memo", "/memo/:id"],
+  matcher: ["/", "/home", "/tulis-memo", "/memo/:id"],
 };
