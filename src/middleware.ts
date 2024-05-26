@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("next-auth.session-token");
+  const token =
+    req.cookies.get("next-auth.session-token") ||
+    req.cookies.get("__Secure-next-auth.session-token");
   const user = req.cookies.get("user");
 
   console.log("Cookies: ", { token, user });
-  console.log("url: ", req.nextUrl.pathname);
 
   if (req.nextUrl.pathname === "/") {
     const response = NextResponse.next();
