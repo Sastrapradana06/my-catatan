@@ -74,7 +74,7 @@ const NavMemo = ({
     <div className=" mt-4">
       <div className=" w-[90%] m-auto h-[30px] flex justify-between items-center lg:w-[70%]">
         <div className=" flex items-center">
-          <button>
+          <button title="kembali" name="btn-kembali">
             <Link href="/home">
               <BsArrowLeft size={25} />
             </Link>
@@ -82,7 +82,11 @@ const NavMemo = ({
         </div>
         <div className="flex gap-4 lg:gap-6">
           {pathname !== "/tulis-memo" && (
-            <button onClick={toogleBookmark}>
+            <button
+              onClick={toogleBookmark}
+              title="bookmark"
+              name="btn-bookmark"
+            >
               {listIdBookmark.includes(idCatatan) ? (
                 <TiStarFullOutline size={25} fill="orange" />
               ) : (
@@ -91,6 +95,8 @@ const NavMemo = ({
             </button>
           )}
           <button
+            title="delete"
+            name="btn-delete"
             className={``}
             onClick={handleDeleteTeks}
             disabled={teksMemo === ""}
@@ -105,6 +111,8 @@ const NavMemo = ({
             />
           </button>
           <button
+            title="undo"
+            name="btn-undo"
             className={``}
             onClick={handleUndo}
             disabled={deletedValue === ""}
@@ -121,6 +129,8 @@ const NavMemo = ({
 
           {judulMemo.length > 0 && teksMemo.length > 0 && (
             <button
+              title="simpan"
+              name="btn-simpan"
               onClick={addMemo}
               className="disabled:text-gray-400 disabled:cursor-not-allowed text-white"
               disabled={process}

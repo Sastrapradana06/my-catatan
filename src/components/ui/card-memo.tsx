@@ -54,8 +54,6 @@ const CardMemo = ({
   date: string;
   time_update: string;
 }) => {
-  console.log(date);
-
   return (
     <div className="">
       <BtnCheckBox id={id} />

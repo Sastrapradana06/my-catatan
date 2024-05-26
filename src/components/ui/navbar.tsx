@@ -29,14 +29,18 @@ export function Navbar() {
           <h1 className="font-judul text-[1.5rem] tracking-[2px]">Mycatatan</h1>
         </div>
         <div className="flex justify-center gap-4 items-center">
-          <button title="Logout" onClick={handleLogout}>
+          <button title="Logout" name="btn-logout" onClick={handleLogout}>
             <RiLogoutCircleRLine size={23} className="text-yellow-500" />
           </button>
-          <button onClick={() => setIsEdit(true)}>
+          <button
+            title="delete"
+            name="btn-delete"
+            onClick={() => setIsEdit(true)}
+          >
             <MdDelete size={23} className="text-red-500" />
           </button>
-          <button>
-            <Link href="/home">
+          <button title="search" name="btn-search">
+            <Link href="/cari-memo">
               <BiSearch size={25} />
             </Link>
           </button>
