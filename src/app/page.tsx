@@ -9,6 +9,7 @@ import LoadingBtn from "@/components/ui/loading-btn";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const [input, handleChange] = useHandleInput({
     email: "",
     password: "",
@@ -17,6 +18,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setMessage("");
     setIsLoading(true);
     e.preventDefault();
     try {
@@ -26,13 +28,14 @@ export default function Home() {
         redirect: false,
       });
 
-      console.log("Response:", res); // Tambahkan ini untuk debugging
+      console.log("Response:", res);
 
       if (res) {
         if (res.ok || res.status == 200) {
           router.push("/home");
         } else {
-          console.log("Login failed:", res.error); // Tambahkan ini untuk debugging
+          setMessage("Harap periksa kembali email dan password");
+          console.log("Login failed:", res.error);
         }
       }
     } catch (error) {
@@ -89,6 +92,11 @@ export default function Home() {
               className="shadow-sm outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
               required={true}
             />
+          </div>
+          <div className="w-full h-max mb-5">
+            <p className="text-red-500 font-semibold text-[.9rem] italic">
+              {message}
+            </p>
           </div>
           <button
             type="submit"
