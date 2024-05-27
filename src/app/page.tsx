@@ -28,8 +28,6 @@ export default function Home() {
         redirect: false,
       });
 
-      console.log("Response:", res);
-
       if (res) {
         if (res.ok || res.status == 200) {
           router.push("/home");
