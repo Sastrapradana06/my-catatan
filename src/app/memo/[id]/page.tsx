@@ -12,6 +12,7 @@ export default function Memo({ params }: { params: { id: string | number } }) {
   const [isLoading, setIsLoading] = useState(false);
   const [judulMemo, setJudulMemo] = useState("");
   const [teksMemo, setTeksMemo] = useState("");
+  const [dateCreate, setDateCreate] = useState("");
 
   const textareaRef = useRef(null);
   const textareaTeks = useRef<HTMLTextAreaElement>(null);
@@ -25,6 +26,40 @@ export default function Memo({ params }: { params: { id: string | number } }) {
       day: "numeric",
     };
     return event.toLocaleDateString("id-ID", options);
+  };
+
+  const formatDate = (timestamp: string | number) => {
+    const days = [
+      "Senin",
+      "Selasa",
+      "Rabu",
+      "Kamis",
+      "Jumat",
+      "Sabtu",
+      "Minggu",
+    ];
+    const months = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
+
+    const date = new Date(timestamp);
+    const dayName = days[date.getUTCDay()];
+    const day = date.getUTCDate();
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+
+    return `${dayName}, ${day} ${month} ${year}`;
   };
 
   function setDynamicHeight(ref: any) {
@@ -44,6 +79,7 @@ export default function Memo({ params }: { params: { id: string | number } }) {
         const { data } = result;
         setTeksMemo(data[0].teks);
         setJudulMemo(data[0].judul);
+        setDateCreate(data[0].created_at);
       } else {
         router.push("/home");
       }
@@ -107,7 +143,8 @@ export default function Memo({ params }: { params: { id: string | number } }) {
           />
           <div className=" mt-1 text-[.8rem] text-gray-400">
             <p>
-              {getDataNow()} | {teksMemo.length} kata
+              {dateCreate !== "" && formatDate(dateCreate)} | {teksMemo.length}{" "}
+              kata
             </p>
           </div>
           <textarea

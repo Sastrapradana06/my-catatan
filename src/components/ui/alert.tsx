@@ -12,7 +12,7 @@ export default function Alert({
   return (
     <div className="w-full  h-max absolute left-0 bottom-[80px]">
       <div
-        className={`flex w-[90%] m-auto items-center p-4 mb-4 text-sm rounded-lg ${
+        className={`flex w-max m-auto items-center p-4 mb-4 text-sm rounded-lg ${
           type === "success"
             ? "text-green-400 bg-gray-800  border-green-800"
             : "text-red-400 bg-gray-800 border-red-800"
@@ -30,9 +30,9 @@ export default function Alert({
         </svg>
         <span className="sr-only">Info</span>
         <div className="flex justify-center items-center gap-2">
-          <p className="font-medium">
+          {/* <p className="font-medium">
             {type === "success" ? "Success," : "Gagal,"}
-          </p>
+          </p> */}
           <span className="text-gray-300">{message}</span>
         </div>
       </div>
